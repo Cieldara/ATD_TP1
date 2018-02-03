@@ -1,6 +1,6 @@
 import numpy as np
 
-filepath = 'tiny-graph.txt'
+filepath = 'large-graph.txt'
 matriceAdjacence = []
 matriceTransition = []
 probLambda = 0.85
@@ -36,28 +36,19 @@ with open(filepath) as fp:
 		#print("Sum={}".format(sum(list_line)))
 	print matriceTransition
 
-	pagerank = [1/float(taille)] * taille
-	pageranktmp = pagerank
+	pagerank = np.array([1/float(taille)] * taille)
+	arrayTransition = np.array(matriceTransition)	
+	l = 0
+	
+	while True:
+		pageranktmp = pagerank
+		pagerank = pagerank.dot(arrayTransition)
+		l+= 1
+		if np.linalg.norm(pagerank - pageranktmp) <= prec:
+			break
+			
 	print pagerank
-	for i in range(taille):
-		res = 0
-		for j in range(taille):
-			res += (pagerank[j]*matriceTransition[i][j])
-			print ("i={} j={} tmp={} res={}".format(i, j, pagerank[j]*matriceTransition[i][j], res))
-		pageranktmp[i] = res
-	l = 1
-
-	print pageranktmp
-
-	while np.linalg.norm(np.array(pageranktmp) - np.array(pagerank)) >= prec :
-		pagerank = pageranktmp
-		for i in range(taille):
-			res = 0
-			for j in range(taille):
-				res += (pagerank[j]*matriceTransition[i][j])
-			pageranktmp[i] = res
-		l += 1
-
-	print("L={} norm={}".format(l, np.linalg.norm(np.array(pageranktmp) - np.array(pagerank))))
+	print("L={} norm={}".format(l, np.linalg.norm(pageranktmp - pagerank)))
+	print("Affichage du pagerank : ", list(reversed(pagerank.argsort())))
 	
 	
