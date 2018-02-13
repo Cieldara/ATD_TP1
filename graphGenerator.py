@@ -10,9 +10,9 @@ for i in range(0,taille):
 	possibleDest = range(0,taille)
 	possibleDest.remove(i)
 	#Definition d'un seuil pour chaque noeud du graphe
-	seuil = randint(0,taille)
+	seuil = randint(0,100)
 	for j in possibleDest:
-		value = randint(0,taille)
+		value = randint(0,100)
 		if value <= seuil:
 			toWrite += str(j) + " " 
 	file.write(toWrite+'\n')
